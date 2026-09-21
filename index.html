@@ -60,6 +60,11 @@
     text-shadow: 0 2px 0 #fff6c8, 0 6px 24px rgba(255,255,255,.6);
     opacity: 0; animation: aparece 2s ease-out .4s forwards, flota 5s ease-in-out 2.4s infinite;
   }
+  .sub {
+    margin: 12px auto 0; max-width: 32ch; font-weight: 600; font-size: clamp(1.05rem, 4.4vw, 1.5rem); line-height: 1.3; color: #7a4a10;
+    text-shadow: 0 1px 0 #fff6c8, 0 3px 14px rgba(255,255,255,.7);
+    opacity: 0; animation: aparece 2s ease-out 1.2s forwards;
+  }
   @keyframes aparece { from { opacity: 0; transform: translateY(24px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
   @keyframes flota { 50% { transform: translateY(-8px); } }
 
@@ -95,6 +100,7 @@
 <div class="top">
   <div class="feliz">🌼 ¡Feliz Día de las Flores Amarillas! 🌼</div>
   <p class="frase">Ten tu ramito mi Nori 💛</p>
+  <p class="sub">Que tu día brille tanto como estas flores amarillas</p>
 </div>
 <div class="garden" id="back"></div>
 <canvas id="fx"></canvas>
