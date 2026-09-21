@@ -87,10 +87,6 @@
   .iris-head { transform-origin: 50% 90%; animation: irissway var(--dur) ease-in-out var(--delay) infinite alternate; }
   @keyframes irissway { from { transform: rotate(calc(var(--amp) * 1.6)); } to { transform: rotate(calc(var(--amp) * -1.6)); } }
 
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
-    canvas { display: none; }
-  }
 </style>
 </head>
 <body>
@@ -203,7 +199,7 @@
     document.getElementById('front').innerHTML = '';
     document.querySelectorAll('.paper').forEach(p => p.remove());
     const W = innerWidth, H = innerHeight;
-    const u = Math.min(H * .3, W * .36);
+    const u = Math.min(H * .34, W * .44);
     const paperH = u * 1.05, paperBottom = H * .03;
     const x = W / 2, y = paperBottom + paperH * .2;
     RAMO.forEach(([kind, ang, s, layer], i) => stem(kind, ang, s * u, layer, x, y, i));
