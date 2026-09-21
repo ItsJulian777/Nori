@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Día de las Flores Amarillas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,900&family=Nunito:wght@400;600&display=swap">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(180deg, #ff9a3c 0%, #ffc857 38%, #fff3b0 70%, #cfe8a0 100%);
+    background-size: 100% 200%;
+    animation: sky 24s ease-in-out infinite alternate;
+    color: #4a2c00;
+  }
+  @keyframes sky { to { background-position: 0 100%; } }
+
+  .sun {
+    position: fixed; top: -18vmin; left: 50%; width: 70vmin; height: 70vmin; margin-left: -35vmin;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fffbe0 0 22%, rgba(255,240,150,.7) 40%, rgba(255,220,80,0) 70%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .rays {
+    position: fixed; top: -60vmax; left: 50%; width: 120vmax; height: 120vmax; margin-left: -60vmax;
+    background: repeating-conic-gradient(from 0deg, rgba(255,255,255,.22) 0 5deg, transparent 5deg 15deg);
+    -webkit-mask: radial-gradient(circle, #000 0, transparent 55%); mask: radial-gradient(circle, #000 0, transparent 55%);
+    animation: spin 120s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 50% { transform: scale(1.12); opacity: .85; } }
+
+  header { position: fixed; top: 5vh; left: 0; right: 0; text-align: center; z-index: 5; padding: 0 16px; pointer-events: none; }
+  h1 {
+    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(2rem, 7vw, 5rem); line-height: 1.05; color: #7a3e00;
+    text-shadow: 0 2px 0 #fff6c8, 0 6px 24px rgba(255,255,255,.6);
+  }
+  h1 span { display: inline-block; opacity: 0; transform: translateY(30px) rotate(-6deg); animation: letter .9s cubic-bezier(.2,1.4,.4,1) forwards, bob 4s ease-in-out infinite; }
+  @keyframes letter { to { opacity: 1; transform: none; } }
+  @keyframes bob { 50% { transform: translateY(-6px); } }
+  header p { margin-top: 10px; font-size: clamp(.95rem, 2.2vw, 1.3rem); font-weight: 600; color: #7a4a10; }
+  .date { display: inline-block; margin-bottom: 8px; padding: 4px 14px; border-radius: 99px; background: #7a3e00; color: #ffe27a; font-weight: 600; letter-spacing: .12em; font-size: .8rem; text-transform: uppercase; }
+
+  .top { position: fixed; top: 6vh; left: 0; right: 0; z-index: 5; padding: 0 20px; text-align: center; pointer-events: none; }
+  .feliz {
+    display: inline-block; margin-bottom: 14px; padding: 8px 20px; border-radius: 99px;
+    background: #7a3e00; color: #ffe27a; font-weight: 600; letter-spacing: .06em;
+    font-size: clamp(.95rem, 3.2vw, 1.4rem); box-shadow: 0 4px 18px rgba(122,62,0,.35);
+    opacity: 0; animation: aparece 1.4s ease-out .1s forwards, latido 3s ease-in-out 1.5s infinite;
+  }
+  @keyframes latido { 50% { transform: scale(1.05); } }
+  .frase {
+    padding: 0;
+    font-family: 'Playfair Display', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(1.6rem, 5vw, 3.6rem); line-height: 1.15; color: #7a3e00;
+    text-shadow: 0 2px 0 #fff6c8, 0 6px 24px rgba(255,255,255,.6);
+    opacity: 0; animation: aparece 2s ease-out .4s forwards, flota 5s ease-in-out 2.4s infinite;
+  }
+  @keyframes aparece { from { opacity: 0; transform: translateY(24px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+  @keyframes flota { 50% { transform: translateY(-8px); } }
+
+  canvas { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+
+  .garden { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+  .garden.front { z-index: 4; }
+  .stem { position: absolute; transform-origin: 50% 100%; opacity: 0; animation: brota 1.6s cubic-bezier(.2, 1.2, .4, 1) var(--in) forwards; }
+  @keyframes brota { from { opacity: 0; scale: .2; } to { opacity: 1; scale: 1; } }
+  .flower { position: absolute; inset: 0; transform-origin: 50% 100%;
+    animation: sway var(--dur) ease-in-out var(--delay) infinite alternate; }
+  .flower svg { display: block; overflow: visible; }
+  .paper { position: fixed; z-index: 6; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(80,40,0,.35)); }
+  .paper svg { display: block; overflow: visible; }
+  @keyframes sway { from { transform: rotate(calc(var(--amp) * -1)); } to { transform: rotate(var(--amp)); } }
+
+  .head, .petals-a, .petals-b, .iris-head { transform-box: fill-box; transform-origin: center; }
+  .head { animation: headsway var(--dur) ease-in-out var(--delay) infinite alternate; }
+  @keyframes headsway { from { transform: rotate(calc(var(--amp) * .8)); } to { transform: rotate(calc(var(--amp) * -.8)); } }
+  .petals-a { animation: spinA 40s linear infinite; }
+  .petals-b { animation: spinA 55s linear infinite reverse; }
+  .breathe { animation: spinA 55s linear infinite reverse, breathe 3.6s ease-in-out infinite; }
+  @keyframes spinA { to { transform: rotate(360deg); } }
+  @keyframes breathe { 50% { scale: 1.06; } }
+  .iris-head { transform-origin: 50% 90%; animation: irissway var(--dur) ease-in-out var(--delay) infinite alternate; }
+  @keyframes irissway { from { transform: rotate(calc(var(--amp) * 1.6)); } to { transform: rotate(calc(var(--amp) * -1.6)); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; }
+    canvas { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="rays"></div>
+<div class="sun"></div>
+<div class="top">
+  <div class="feliz">🌼 ¡Feliz Día de las Flores Amarillas! 🌼</div>
+  <p class="frase">Ten tu ramito mi Nori 💛</p>
+</div>
+<div class="garden" id="back"></div>
+<canvas id="fx"></canvas>
+<div class="garden front" id="front"></div>
+
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const rand = (a, b) => a + Math.random() * (b - a);
+  const pick = a => a[Math.floor(Math.random() * a.length)];
+
+  // Título letra por letra
+
+  // ---------- Flores en SVG ----------
+  const leaf = (x, y, dir, len, fill) =>
+    `<path d="M${x},${y} q${dir * len * .5},${-len * .5} ${dir * len},${-len * .1} q${-dir * len * .4},${len * .35} ${-dir * len},${len * .1}z" fill="${fill}"/>`;
+
+  function sunflowerSVG() {
+    const dark = pick(['#f2a900', '#f5b800']), light = pick(['#ffd23f', '#ffdd57', '#ffc72c']);
+    let a = '', b = '', seeds = '';
+    const N = 22;
+    for (let i = 0; i < N; i++) {
+      const ang = i * 360 / N;
+      a += `<ellipse cx="0" cy="-66" rx="13" ry="30" fill="${dark}" transform="rotate(${ang})"/>`;
+      b += `<ellipse cx="0" cy="-58" rx="12" ry="27" fill="${light}" transform="rotate(${ang + 360 / N / 2})"/>`;
+    }
+    for (let i = 1; i < 130; i++) {
+      const r = 3.4 * Math.sqrt(i), th = i * 2.39996;
+      seeds += `<circle cx="${(r * Math.cos(th)).toFixed(1)}" cy="${(r * Math.sin(th)).toFixed(1)}" r="1.6" fill="#2b1500" opacity=".55"/>`;
+    }
+    return `<svg viewBox="-100 -100 200 420" width="100%" height="100%">
+      <path d="M0,10 C-8,90 8,170 0,320" stroke="#3f8a2a" stroke-width="9" fill="none" stroke-linecap="round"/>
+      ${leaf(0, 200, -1, 70, '#4fa334')}${leaf(0, 250, 1, 62, '#3f8a2a')}
+      <g class="head">
+        <g class="petals-a">${a}</g>
+        <g class="petals-b">${b}</g>
+        <circle r="40" fill="url(#seedg)"/>${seeds}
+        <circle r="40" fill="none" stroke="#f0a400" stroke-width="2" opacity=".6"/>
+      </g></svg>`;
+  }
+
+  function irisSVG() {
+    const st = pick(['#ffe14d', '#ffd400', '#fff06a']), fa = pick(['#f7b500', '#ffc61a', '#f2a900']);
+    const standard = a => `<path d="M0,0 C-20,-25 -22,-62 0,-92 C22,-62 20,-25 0,0Z" fill="${st}" stroke="#e0a800" stroke-width="1" transform="rotate(${a})"/>`;
+    const fall = a => `<g transform="rotate(${a})"><path d="M0,0 C-30,-10 -34,-52 0,-80 C34,-52 30,-10 0,0Z" fill="${fa}" stroke="#d99a00" stroke-width="1"/>
+      <path d="M0,-6 L0,-52 M-6,-12 L-11,-42 M6,-12 L11,-42" stroke="#8a4b00" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>
+      <path d="M0,-10 L0,-40" stroke="#ff8a00" stroke-width="5" stroke-linecap="round" opacity=".8"/></g>`;
+    return `<svg viewBox="-100 -100 200 420" width="100%" height="100%">
+      <path d="M0,10 C6,90 -6,170 0,320" stroke="#3a8a3a" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <path d="M-2,320 C-40,240 -46,140 -22,90 C-18,160 -10,250 2,320z" fill="#3f9a45"/>
+      <path d="M4,320 C44,250 52,170 30,110 C22,180 14,260 2,320z" fill="#2f8038"/>
+      <g class="iris-head">
+        ${fall(140)}${fall(220)}${fall(180)}${standard(-32)}${standard(32)}${standard(0)}
+        <circle r="7" fill="#ff9d00"/>
+      </g></svg>`;
+  }
+
+  // Cada tallo nace del mismo punto y se abre en abanico; el papel lo tapa.
+  function stem(kind, ang, size, layer, x, y, i) {
+    const wrap = document.createElement('div');
+    wrap.className = 'stem';
+    const w = size, h = size * 2.1;
+    wrap.style.cssText = `left:${x - w / 2}px;bottom:${y}px;width:${w}px;height:${h}px;rotate:${ang}deg;--in:${(i * .12).toFixed(2)}s;`;
+    const el = document.createElement('div');
+    el.className = 'flower';
+    el.style.cssText = `--dur:${rand(3, 5).toFixed(2)}s;--delay:${(-rand(0, 5)).toFixed(2)}s;--amp:${rand(1, 2.2).toFixed(2)}deg;`;
+    el.innerHTML = kind === 'sun' ? sunflowerSVG() : irisSVG();
+    wrap.appendChild(el);
+    document.getElementById(layer).appendChild(wrap);
+  }
+
+  const paperSVG = `<svg viewBox="0 0 300 200" width="100%" height="100%">
+    <path d="M14,6 Q80,-6 150,8 Q220,-6 286,6 L164,200 L136,200Z" fill="#b97b3d"/>
+    <path d="M0,22 Q40,8 80,20 Q115,10 150,28 L146,200 L136,200Z" fill="#dba468"/>
+    <path d="M300,22 Q260,8 220,20 Q185,10 150,28 L154,200 L164,200Z" fill="#c98b4b"/>
+    <path d="M150,28 L146,200 L154,200Z" fill="#a86f36" opacity=".6"/>
+    <path d="M84,104 L216,104 L211,124 L89,124Z" fill="#fff3d6"/>
+    <g fill="#fff3d6" stroke="#e2c98f" stroke-width="1.5">
+      <path d="M150,114 C110,80 96,120 118,132 C132,138 146,124 150,114Z"/>
+      <path d="M150,114 C190,80 204,120 182,132 C168,138 154,124 150,114Z"/>
+      <path d="M146,120 L130,166 L142,158 L148,172Z"/><path d="M154,120 L170,166 L158,158 L152,172Z"/>
+      <circle cx="150" cy="116" r="8"/>
+    </g></svg>`;
+
+  // gradiente de semillas compartido
+
+  // gradiente de semillas compartido
+  const defs = document.createElementNS(NS, 'svg');
+  defs.setAttribute('width', 0); defs.setAttribute('height', 0); defs.style.position = 'absolute';
+  defs.innerHTML = '<defs><radialGradient id="seedg"><stop offset="0" stop-color="#8a4a12"/><stop offset=".7" stop-color="#5a2d05"/><stop offset="1" stop-color="#3a1c00"/></radialGradient></defs>';
+  document.body.appendChild(defs);
+
+  // [tipo, ángulo, tamaño, capa]
+  const RAMO = [
+    ['iris', -8, 1.2, 'back'], ['sun', 14, 1.1, 'back'], ['iris', -30, 1.05, 'back'], ['sun', 34, .95, 'back'],
+    ['sun', -22, .95, 'front'], ['iris', 24, .85, 'front'], ['sun', 0, .8, 'front'],
+    ['iris', -44, .75, 'front'], ['iris', 46, .75, 'front']
+  ];
+
+  function build() {
+    document.getElementById('back').innerHTML = '';
+    document.getElementById('front').innerHTML = '';
+    document.querySelectorAll('.paper').forEach(p => p.remove());
+    const W = innerWidth, H = innerHeight;
+    const u = Math.min(H * .3, W * .36);
+    const paperH = u * 1.05, paperBottom = H * .03;
+    const x = W / 2, y = paperBottom + paperH * .2;
+    RAMO.forEach(([kind, ang, s, layer], i) => stem(kind, ang, s * u, layer, x, y, i));
+    const p = document.createElement('div');
+    p.className = 'paper';
+    p.style.cssText = `left:${x - u * .8}px;bottom:${paperBottom}px;width:${u * 1.6}px;height:${paperH}px;`;
+    p.innerHTML = paperSVG;
+    document.body.appendChild(p);
+  }
+  build();
+  let rt, lastW = innerWidth;
+  addEventListener('resize', () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rt); rt = setTimeout(build, 250); });
+
+  // Lluvia de pétalos al tocar
+  addEventListener('pointerdown', e => { for (let i = 0; i < 14; i++) spawn(e.clientX, e.clientY, true); });
+
+  // ---------- Pétalos y polen (canvas) ----------
+  const cv = document.getElementById('fx'), cx = cv.getContext('2d');
+  let wind = 0, targetWind = 0;
+  const resizeCanvas = () => {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  resizeCanvas(); addEventListener('resize', resizeCanvas);
+  addEventListener('pointermove', e => { targetWind = (e.clientX / innerWidth - .5) * 2; });
+
+  const parts = [];
+  function spawn(x, y, burst) {
+    const petal = Math.random() < .55;
+    parts.push({
+      x: x ?? rand(-20, innerWidth), y: y ?? rand(-30, -5),
+      vx: burst ? rand(-2.5, 2.5) : rand(-.3, .3), vy: burst ? rand(-3, -.5) : rand(.4, 1.2),
+      r: petal ? rand(5, 10) : rand(1.5, 3), petal,
+      rot: rand(0, 6.28), vr: rand(-.03, .03), ph: rand(0, 6.28),
+      col: petal ? pick(['#ffd23f', '#ffc107', '#ffe066', '#f7a800']) : '#fff8c0'
+    });
+  }
+  for (let i = 0; i < 40; i++) spawn(rand(0, innerWidth), rand(0, innerHeight));
+
+  let last = performance.now();
+  function frame(now) {
+    const dt = Math.min((now - last) / 16.7, 3); last = now;
+    wind += (targetWind - wind) * .03;
+    cx.clearRect(0, 0, innerWidth, innerHeight);
+    if (Math.random() < .12 * dt && parts.length < 110) spawn();
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.ph += .03 * dt;
+      p.vy += (p.vy < 1.4 ? .02 : -.02) * dt * (p.petal ? 1 : .3);
+      p.x += (p.vx + wind * 1.6 + Math.sin(p.ph) * .6) * dt;
+      p.y += p.vy * dt;
+      p.rot += p.vr * dt;
+      if (p.y > innerHeight + 20 || p.x < -40 || p.x > innerWidth + 40) { parts.splice(i, 1); continue; }
+      cx.save(); cx.translate(p.x, p.y);
+      if (p.petal) {
+        cx.rotate(p.rot); cx.scale(1, Math.abs(Math.cos(p.ph)) * .7 + .3);
+        cx.fillStyle = p.col; cx.beginPath(); cx.ellipse(0, 0, p.r * .55, p.r, 0, 0, 6.283); cx.fill();
+      } else {
+        cx.globalAlpha = .5 + .5 * Math.sin(p.ph * 2);
+        cx.fillStyle = p.col; cx.shadowColor = '#fff2a0'; cx.shadowBlur = 8;
+        cx.beginPath(); cx.arc(0, 0, p.r, 0, 6.283); cx.fill();
+      }
+      cx.restore();
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
